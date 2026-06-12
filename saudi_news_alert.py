@@ -7,41 +7,33 @@ BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 SEARCH_QUERIES = [
-    # Korea
-    '"Saudi Arabia" "South Korea" business',
-    '"Saudi Arabia" "Korean company"',
-    '"NEOM" "South Korea"',
-    '"Aramco" "South Korea"',
-    '"사우디" "한국 기업"',
-    '"사우디" "수주"',
-    '"사우디" "계약"',
-    '"사우디" "진출"',
-
-    # US / AI / Big Tech
-    '"Saudi Arabia" "NVIDIA"',
-    '"Saudi Arabia" "AMD"',
-    '"Saudi Arabia" "Microsoft"',
-    '"Saudi Arabia" "Google Cloud"',
-    '"Saudi Arabia" "Oracle"',
-    '"Saudi Arabia" "Amazon Web Services"',
-    '"Saudi Arabia" "OpenAI"',
-    '"Saudi Arabia" "data center"',
-    '"Saudi Arabia" "AI chip"',
-
-    # China
-    '"Saudi Arabia" "Huawei"',
-    '"Saudi Arabia" "Alibaba Cloud"',
-    '"Saudi Arabia" "Tencent"',
-    '"Saudi Arabia" "ZTE"',
-    '"Saudi Arabia" "China" "AI"',
-    '"Saudi Arabia" "China" "investment"',
-
-    # Saudi institutions
-    '"Aramco" "AI"',
-    '"PIF" "technology"',
-    '"NEOM" "data center"',
-    '"HUMAIN" "NVIDIA"',
-    '"HUMAIN" "AI"',
+    "Saudi Arabia business",
+    "Saudi Arabia investment",
+    "Saudi Arabia contract",
+    "Saudi Arabia project",
+    "Saudi Arabia AI",
+    "Saudi Arabia data center",
+    "Saudi Arabia NVIDIA",
+    "Saudi Arabia AMD",
+    "Saudi Arabia Microsoft",
+    "Saudi Arabia Google",
+    "Saudi Arabia Oracle",
+    "Saudi Arabia Huawei",
+    "Saudi Arabia China",
+    "Saudi Arabia South Korea",
+    "NEOM project",
+    "NEOM investment",
+    "Aramco technology",
+    "PIF investment",
+    "HUMAIN AI",
+    "사우디 투자",
+    "사우디 계약",
+    "사우디 수주",
+    "사우디 AI",
+    "사우디 데이터센터",
+    "네옴 프로젝트",
+    "아람코 투자",
+    "PIF 투자",
 ]
 
 EXCLUDE_KEYWORDS = [
