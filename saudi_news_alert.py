@@ -7,93 +7,109 @@ BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 SEARCH_QUERIES = [
-"Saudi Arabia Korea contract",
-"Saudi Arabia Korea investment",
-"Saudi Arabia Korea MOU",
-"Saudi Arabia Korea project",
-"Saudi Arabia Korean company",
-"NEOM Korea",
-"Aramco Korea",
-"PIF Korea",
-"사우디 수주",
-"사우디 계약",
-"사우디 투자",
-"사우디 진출",
-"네옴 프로젝트",
-"아람코 한국기업"
+    # Korea
+    '"Saudi Arabia" "South Korea" business',
+    '"Saudi Arabia" "Korean company"',
+    '"NEOM" "South Korea"',
+    '"Aramco" "South Korea"',
+    '"사우디" "한국 기업"',
+    '"사우디" "수주"',
+    '"사우디" "계약"',
+    '"사우디" "진출"',
+
+    # US / AI / Big Tech
+    '"Saudi Arabia" "NVIDIA"',
+    '"Saudi Arabia" "AMD"',
+    '"Saudi Arabia" "Microsoft"',
+    '"Saudi Arabia" "Google Cloud"',
+    '"Saudi Arabia" "Oracle"',
+    '"Saudi Arabia" "Amazon Web Services"',
+    '"Saudi Arabia" "OpenAI"',
+    '"Saudi Arabia" "data center"',
+    '"Saudi Arabia" "AI chip"',
+
+    # China
+    '"Saudi Arabia" "Huawei"',
+    '"Saudi Arabia" "Alibaba Cloud"',
+    '"Saudi Arabia" "Tencent"',
+    '"Saudi Arabia" "ZTE"',
+    '"Saudi Arabia" "China" "AI"',
+    '"Saudi Arabia" "China" "investment"',
+
+    # Saudi institutions
+    '"Aramco" "AI"',
+    '"PIF" "technology"',
+    '"NEOM" "data center"',
+    '"HUMAIN" "NVIDIA"',
+    '"HUMAIN" "AI"',
 ]
 
-BUSINESS_KEYWORDS = [
-"contract", "project", "investment", "mou",
-"agreement", "deal", "partnership",
-"수주", "계약", "투자", "협약",
-"진출", "합작", "공급", "사업"
+EXCLUDE_KEYWORDS = [
+    "football", "soccer", "transfer", "tourism", "travel",
+    "oil price", "crude oil", "war", "israel", "iran",
+    "축구", "이적", "관광", "여행", "유가", "전쟁"
 ]
 
 articles = []
 
 for query in SEARCH_QUERIES:
+    rss_url = (
+        "https://news.google.com/rss/search?q="
+        + requests.utils.quote(query)
+        + "&hl=ko&gl=KR&ceid=KR:ko"
+    )
 
-```
-rss_url = (
-    "https://news.google.com/rss/search?q="
-    + requests.utils.quote(query)
-)
-
-try:
     feed = feedparser.parse(rss_url)
 
     for entry in feed.entries:
-
         title = entry.title
         link = entry.link
+        source = entry.get("source", {}).get("title", "")
 
         title_lower = title.lower()
 
-        if any(
-            keyword.lower() in title_lower
-            for keyword in BUSINESS_KEYWORDS
-        ):
-            articles.append({
-                "title": title,
-                "link": link
-            })
+        if any(word.lower() in title_lower for word in EXCLUDE_KEYWORDS):
+            continue
 
-except Exception:
-    pass
-```
+        articles.append({
+            "title": title,
+            "source": source,
+            "link": link
+        })
 
 seen = set()
 unique_articles = []
 
 for article in articles:
-if article["title"] not in seen:
-seen.add(article["title"])
-unique_articles.append(article)
+    if article["title"] not in seen:
+        seen.add(article["title"])
+        unique_articles.append(article)
 
 unique_articles = unique_articles[:20]
 
 today = datetime.now().strftime("%Y-%m-%d")
 
-message = f"📌 사우디 한국기업 동향 ({today})\n\n"
+message = f"📌 Saudi Business Intelligence ({today})\n"
+message += "한국·미국·중국·엔비디아 사우디 동향\n\n"
 
 if not unique_articles:
-message += "관련 신규 기사를 찾지 못했습니다."
+    message += "관련 신규 기사를 찾지 못했습니다."
 else:
-for idx, article in enumerate(unique_articles, start=1):
-message += (
-f"{idx}. {article['title']}\n"
-f"{article['link']}\n\n"
-)
+    for idx, article in enumerate(unique_articles, start=1):
+        message += (
+            f"{idx}. {article['title']}\n"
+            f"- {article['source']}\n"
+            f"{article['link']}\n\n"
+        )
 
 url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
 requests.post(
-url,
-json={
-"chat_id": CHAT_ID,
-"text": message[:4000]
-}
+    url,
+    json={
+        "chat_id": CHAT_ID,
+        "text": message[:4000]
+    }
 )
 
 print("News sent")
