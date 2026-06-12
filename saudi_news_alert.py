@@ -112,4 +112,5 @@ requests.post(
     }
 )
 
+print(f"Articles found: {len(unique_articles)}")
 print("News sent")
