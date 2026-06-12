@@ -1,10 +1,13 @@
-name: Telegram Test
+name: Saudi News Alert
 
 on:
   workflow_dispatch:
 
+  schedule:
+    - cron: '21 21 * * *'
+
 jobs:
-  test:
+  news:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,7 +17,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - run: pip install requests
+      - run: pip install -r requirements.txt
 
       - run: python saudi_news_alert.py
         env:
