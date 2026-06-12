@@ -3,6 +3,9 @@ name: Saudi Business Bot
 on:
   workflow_dispatch:
 
+  schedule:
+    - cron: "0 21 * * *"
+
 jobs:
   run:
     runs-on: ubuntu-latest
